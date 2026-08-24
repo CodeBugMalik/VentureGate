@@ -1,0 +1,17 @@
+pragma language_version >=0.22.0;
+
+// Ledger state: holds the public criteria for accreditation
+export ledger min_net_worth: Uint<32>;
+export ledger min_income: Uint<32>;
+
+// Constructor to initialize the rules
+constructor(initial_min_net_worth: Uint<32>, initial_min_income: Uint<32>) {
+    min_net_worth = disclose(initial_min_net_worth);
+    min_income = disclose(initial_min_income);
+}
+
+// Circuit: verifies eligibility based on private financials
+export circuit verify_accreditation(net_worth: Uint<32>, income: Uint<32>): [] {
+    assert(net_worth >= min_net_worth, "Net worth too low");
+    assert(income >= min_income, "Income too low");
+}
