@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="VentureGate — Sovereign Institutional Zero-Knowledge Accredited Investor Gateway on Midnight Network. Cryptographically prove wealth without disclosing balances."
+    />
+    <meta property="og:title" content="VentureGate 💎 — Sovereign Institutional ZK Gateway" />
+    <meta
+      property="og:description"
+      content="Cryptographically verify accredited investor status on Midnight Network without revealing bank statements, tax documents, or balances."
+    />
+    <title>VentureGate 💎 — Sovereign Institutional ZK Gateway</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts & Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind Play CDN & Sovereign Institutional ZK Design Tokens -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-fixed": "#241a00",
+              "surface-container-high": "#292a2c",
+              "tertiary": "#ffc37b",
+              "secondary-fixed-dim": "#4edea3",
+              "tertiary-fixed": "#ffddb8",
+              "surface-container-highest": "#343537",
+              "on-secondary-fixed": "#002113",
+              "surface": "#121315",
+              "primary": "#f2ca50",
+              "tertiary-fixed-dim": "#ffb95f",
+              "on-tertiary": "#472a00",
+              "on-tertiary-fixed": "#2a1700",
+              "on-secondary-fixed-variant": "#005236",
+              "primary-container": "#d4af37",
+              "secondary": "#4edea3",
+              "on-primary": "#3c2f00",
+              "primary-fixed-dim": "#e9c349",
+              "surface-dim": "#121315",
+              "surface-container-lowest": "#0d0e10",
+              "on-surface-variant": "#d0c5af",
+              "outline-variant": "#4d4635",
+              "secondary-fixed": "#6ffbbe",
+              "surface-variant": "#343537",
+              "error-container": "#93000a",
+              "on-secondary": "#003824",
+              "tertiary-container": "#f7a00f",
+              "surface-container-low": "#1b1c1e",
+              "inverse-primary": "#735c00",
+              "on-error": "#690005",
+              "on-surface": "#e3e2e5",
+              "surface-bright": "#38393b",
+              "on-tertiary-fixed-variant": "#653e00",
+              "surface-container": "#1f2022",
+              "inverse-on-surface": "#303033",
+              "inverse-surface": "#e3e2e5",
+              "on-tertiary-container": "#633d00",
+              "surface-tint": "#e9c349",
+              "error": "#ffb4ab",
+              "secondary-container": "#00a572",
+              "on-background": "#e3e2e5",
+              "primary-fixed": "#ffe088",
+              "on-error-container": "#ffdad6",
+              "background": "#121315",
+              "on-primary-fixed-variant": "#574500",
+              "on-primary-container": "#554300",
+              "on-secondary-container": "#00311f",
+              "outline": "#99907c",
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            spacing: {
+              gutter: "1.25rem",
+              "space-md": "1rem",
+              "space-xs": "0.25rem",
+              "margin-desktop": "2.5rem",
+              margin: "1rem",
+              "gutter-desktop": "1.5rem",
+              "space-xl": "2.5rem",
+              "space-sm": "0.5rem",
+              "space-lg": "1.5rem",
+            },
+            fontFamily: {
+              "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+              "display-hero-mobile": ["Outfit", "sans-serif"],
+              "body-md": ["Plus Jakarta Sans", "sans-serif"],
+              "headline-sm": ["Outfit", "sans-serif"],
+              "display-hero": ["Outfit", "sans-serif"],
+              "code-sm": ["JetBrains Mono", "monospace"],
+              "headline-lg": ["Outfit", "sans-serif"],
+              "headline-lg-mobile": ["Outfit", "sans-serif"],
+              "body-sm": ["Plus Jakarta Sans", "sans-serif"],
+              "code-lg": ["JetBrains Mono", "monospace"],
+              "code-md": ["JetBrains Mono", "monospace"],
+              "headline-md": ["Outfit", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-background font-body-md text-on-surface antialiased selection:bg-primary selection:text-on-primary">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
