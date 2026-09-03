@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "file": "index.js",
+  "sourceRoot": "../../../../",
+  "sources": ["contracts/venturegate.compact"],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAOA;;;;;;;;;;MAMA,AAAA,oBAGC;;;;;cAHmC,WAAmB;cAAE,QAAgB;;;;;;;;;;;;;;;;;;;;;;;;;yCAArC,WAAmB,+BAAE,QAAgB;;;;;;;;;sDAArC,WAAmB;sDAAE,QAAgB;;;OAGxE;;;;;;;;GANA;EAHD;;;;;UAAY,uBAA+B;UAAE,oBAA4B;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;IAJzE;;;;;;;;;yEAAsC;IACtC;;;;;;;;;yEAAmC;IAI/B;;;;;;;2HAAyB,uBAAqB;;yEAAjC;IACb;;;;;;;2HAAsB,oBAAkB;;yEAA9B;;;;;;;GACb;EAGD,AAAA,uBAGC,4BAHmC,WAAmB,EAAE,QAAgB;4BAC9D,WAAS;;oDAAI;;;;;;;;;;;yHAAa;;4BAC1B,QAAM;;oDAAI;;;;;;;;;;;yHAAU;;;GAC9B;;;;;;;;;;;;;;;;IAbD;qCAAA;;;;;;;;;;;0GAAsC;KAAA;IACtC;qCAAA;;;;;;;;;;;0GAAmC;KAAA;;;;;;;;;;"
+}
