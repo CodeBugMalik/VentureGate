@@ -8,9 +8,8 @@ VentureGate is a privacy-preserving accredited investor verification portal buil
 
 ## Live Demo & Resources
 
-- **App:** [https://venturegate.vercel.app](https://venturegate.vercel.app)
+- **Live Application:** [https://venturegate-mid.netlify.app/](https://venturegate-mid.netlify.app/)
 - **Demo Video:** [Watch Demo Video Walkthrough (Google Drive)](https://drive.google.com/file/d/1YtwpQ9pI5BKeaVO3u1MlNxITJrrNdOKG/view?usp=sharing)
-- **Netlify Ready:** Pre-configured via `netlify.toml` with zero-config auto build
 - **Contract (Preprod):** `8c34b5c05fe7ae32e5de68635a08d670c9a4ff5049ab2c2f76ffc95597b9082e`
 - **Explorer:** [View on Midnight Explorer](https://preprod.midnightexplorer.com/contracts/8c34b5c05fe7ae32e5de68635a08d670c9a4ff5049ab2c2f76ffc95597b9082e)
 - **Twitter/X:** [@CodeBugMalik](https://twitter.com/CodeBugMalik)
