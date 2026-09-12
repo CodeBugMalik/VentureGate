@@ -16,6 +16,13 @@ scripts/make-commits.ps1
 .DS_Store
 Thumbs.db
 
+# Internal developer guides and raw UI mockups
+MIDNIGHT_MASTER_GUIDE.md
+stitch_venturegate_zk_investor_portal/
+.agents/
+sub assets/
+*.scratchpad*
+
 # DO NOT ignore — these must be committed:
 # frontend/src/managed/    <- TypeScript contract types for React
 # frontend/public/managed/ <- ZK proving keys served at /managed/
