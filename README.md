@@ -1,6 +1,6 @@
-# VentureGate (VaultProof) 💎
+# VentureGate 💎
 
-[![CI](https://github.com/CodeBugMalik/VaultProof/actions/workflows/ci.yaml/badge.svg)](https://github.com/CodeBugMalik/VaultProof/actions/workflows/ci.yaml)
+[![CI](https://github.com/CodeBugMalik/VentureGate/actions/workflows/ci.yaml/badge.svg)](https://github.com/CodeBugMalik/VentureGate/actions/workflows/ci.yaml)
 
 > Prove you're an accredited investor — without revealing your net worth or income.
 
@@ -9,6 +9,7 @@ VentureGate is a privacy-preserving accredited investor verification portal buil
 ## Live Demo
 
 - **App:** [https://venturegate.vercel.app](https://venturegate.vercel.app)
+- **Netlify Ready:** Pre-configured via `netlify.toml` with zero-config auto build
 - **Contract (Preprod):** `8c34b5c05fe7ae32e5de68635a08d670c9a4ff5049ab2c2f76ffc95597b9082e`
 - **Explorer:** [View on Midnight Explorer](https://preprod.midnightexplorer.com/contracts/8c34b5c05fe7ae32e5de68635a08d670c9a4ff5049ab2c2f76ffc95597b9082e)
 - **Twitter/X:** [@CodeBugMalik](https://twitter.com/CodeBugMalik)

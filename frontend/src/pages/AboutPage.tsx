@@ -144,7 +144,7 @@ export default function AboutPage() {
               </Link>
             </div>
             <a 
-              href="https://github.com/VentureGate" 
+              href="https://github.com/CodeBugMalik/VentureGate" 
               target="_blank" 
               rel="noreferrer" 
               className="text-on-surface-variant hover:text-primary transition-colors text-xs font-code-sm flex items-center gap-1.5"
