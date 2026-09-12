@@ -20,8 +20,9 @@ Thumbs.db
 MIDNIGHT_MASTER_GUIDE.md
 stitch_venturegate_zk_investor_portal/
 .agents/
-sub assets/
 *.scratchpad*
+*.mp4
+sub assets/*.mp4
 
 # DO NOT ignore — these must be committed:
 # frontend/src/managed/    <- TypeScript contract types for React

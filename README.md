@@ -6,9 +6,10 @@
 
 VentureGate is a privacy-preserving accredited investor verification portal built on the [Midnight Network](https://midnight.network/). Users prove they meet strict financial requirements (minimum net worth and minimum annual income) to participate in private equity investments, using Zero-Knowledge proofs — without ever revealing their exact financial figures to the platform, the public, or the blockchain.
 
-## Live Demo
+## Live Demo & Resources
 
 - **App:** [https://venturegate.vercel.app](https://venturegate.vercel.app)
+- **Demo Video:** [Watch Demo Video Walkthrough (Google Drive)](https://drive.google.com/file/d/1YtwpQ9pI5BKeaVO3u1MlNxITJrrNdOKG/view?usp=sharing)
 - **Netlify Ready:** Pre-configured via `netlify.toml` with zero-config auto build
 - **Contract (Preprod):** `8c34b5c05fe7ae32e5de68635a08d670c9a4ff5049ab2c2f76ffc95597b9082e`
 - **Explorer:** [View on Midnight Explorer](https://preprod.midnightexplorer.com/contracts/8c34b5c05fe7ae32e5de68635a08d670c9a4ff5049ab2c2f76ffc95597b9082e)
@@ -24,6 +25,30 @@ VentureGate uses Zero-Knowledge (ZK) proofs to solve this:
 - **Public State**: The smart contract stores the minimum requirements (e.g., $1M net worth, $200k income).
 - **Private Witness**: The user's actual financial data remains entirely on their device.
 - **ZK Circuit**: The user's device generates a cryptographic proof that their private data satisfies the public requirements. Only this proof is submitted to the blockchain.
+
+## User Interface & Gallery
+
+VentureGate features an institutional Sovereign Gold & Obsidian carbon interface designed for family offices, angel syndicates, and fund managers.
+
+### 1. Sovereign Landing Hero & Real-time Metrics
+> Instant accreditation overview, network connectivity telemetry, and institutional metric attestations.
+
+![VentureGate Landing Hero](sub%20assets/ui1.png)
+
+### 2. Zero-Knowledge Architecture Matrix
+> 3-stage protocol specification detailing client-side WASM execution, Compact SNARK synthesis, and on-chain immutable ledger attestation.
+
+![ZK Architecture Matrix](sub%20assets/ui2.png)
+
+### 3. Institutional Compliance Disruption Matrix
+> Side-by-side comparative breakdown of Legacy Centralized Diligence (vulnerable to subpoenas and breaches) vs. VentureGate Sovereign ZK proofs.
+
+![Compliance Disruption Comparison](sub%20assets/ui3.png)
+
+### 4. Client-Side ZK Witness Generator & Prover Terminal
+> Interactive local prover (`midnight_prover_daemon.wasm`) evaluating polynomial constraints client-side with 0-byte plaintext leakage.
+
+![Verification Terminal & Prover Daemon](sub%20assets/ui4.png)
 
 ## Privacy Model
 
