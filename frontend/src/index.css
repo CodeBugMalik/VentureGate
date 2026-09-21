@@ -1,39 +1,47 @@
 :root {
-  /* Sovereign Institutional ZK Theme Tokens */
-  --bg-main: #121315;
-  --bg-surface: #1b1c1e;
-  --bg-surface-lowest: #0d0e10;
-  --bg-surface-container: #1f2022;
-  --bg-surface-high: #292a2c;
-  --bg-surface-highest: #343537;
-  
-  /* Sovereign Gold Accents */
-  --primary: #f2ca50;
-  --primary-container: #d4af37;
-  --primary-hover: #ffe088;
-  --primary-active: #e9c349;
-  
-  /* Cryptographic Proof Emerald */
-  --secondary: #4edea3;
-  --secondary-dim: #00a572;
-  
-  /* Warm Amber Alert / Caution */
-  --tertiary: #ffc37b;
-  
-  /* Text */
-  --text-primary: #e3e2e5;
-  --text-secondary: #d0c5af;
-  --text-muted: #99907c;
-  
-  /* Borders */
-  --border-color: rgba(77, 70, 53, 0.4);
-  --border-focus: #f2ca50;
-  
-  /* Radii */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  /* Sovereign Obsidian & Horological Gold Theme */
+  --bg-deep: #08090b;
+  --bg-main: #0c0d10;
+  --bg-surface: #121418;
+  --bg-surface-elevated: #181a20;
+  --bg-surface-card: #1c1e24;
+  --bg-glass: rgba(18, 20, 24, 0.75);
+  --bg-glass-card: rgba(24, 26, 32, 0.65);
+
+  /* Horological Gold & Champagne Spectrum */
+  --gold-primary: #d4af37;
+  --gold-champagne: #c9a86a;
+  --gold-light: #f3d790;
+  --gold-bright: #ffe6a3;
+  --gold-dim: #997b28;
+  --gold-glow: rgba(212, 175, 55, 0.15);
+  --gold-border: rgba(201, 168, 106, 0.35);
+  --gold-border-bright: rgba(243, 215, 144, 0.6);
+
+  /* Cryptographic Emerald Verification */
+  --emerald-primary: #10b981;
+  --emerald-glow: rgba(16, 185, 129, 0.18);
+  --emerald-border: rgba(16, 185, 129, 0.35);
+
+  /* Amber Terminal & Telemetry */
+  --amber-primary: #f59e0b;
+  --amber-glow: rgba(245, 158, 11, 0.15);
+
+  /* Typography Colors */
+  --text-primary: #f5f5f7;
+  --text-secondary: #c5c2b8;
+  --text-muted: #858178;
+  --text-dim: #5c5850;
+
+  /* Borders & Dividers */
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-gold: rgba(201, 168, 106, 0.25);
+  --border-active: #d4af37;
+
+  /* Typography Stacks */
+  --font-display: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
 * {
@@ -42,21 +50,45 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--bg-main);
+  font-family: var(--font-body);
+  background-color: var(--bg-deep);
   color: var(--text-primary);
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  background-image: 
-    radial-gradient(circle at 15% 30%, rgba(242, 202, 80, 0.035), transparent 40%),
-    radial-gradient(circle at 85% 70%, rgba(78, 222, 163, 0.02), transparent 40%);
+  -moz-osx-font-smoothing: grayscale;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 175, 55, 0.08), transparent 70%),
+    radial-gradient(circle at 10% 40%, rgba(16, 185, 129, 0.03), transparent 45%),
+    radial-gradient(circle at 90% 70%, rgba(212, 175, 55, 0.04), transparent 50%),
+    linear-gradient(to bottom, #08090b, #0c0d10);
   background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* Subtle Architectural Grid Texture */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 48px 48px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  pointer-events: none;
+  z-index: 0;
 }
 
 ::selection {
-  background-color: #f2ca50;
-  color: #241a00;
+  background-color: var(--gold-primary);
+  color: #08090b;
 }
 
 ::-webkit-scrollbar {
@@ -64,14 +96,14 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0d0e10;
+  background: var(--bg-deep);
 }
 ::-webkit-scrollbar-thumb {
-  background: #292a2c;
+  background: #252830;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4d4635;
+  background: var(--gold-dim);
 }
 
 a {
@@ -79,25 +111,164 @@ a {
   text-decoration: none;
 }
 
-/* Material Symbols alignment */
-.material-symbols-outlined {
-  font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 20;
-  display: inline-flex;
-  vertical-align: middle;
-  line-height: 1;
-}
-
-/* Base utility overrides */
+/* Container & Layout */
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  position: relative;
+  z-index: 1;
 }
 
 .main-content {
   flex: 1;
+}
+
+/* Typography Utilities */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Horological Gold Gradient Text */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #ffe6a3 0%, #d4af37 50%, #aa821f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gold-bright {
+  background: linear-gradient(135deg, #ffffff 0%, #f3d790 60%, #d4af37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism Panels */
+.glass-panel {
+  background: var(--bg-glass-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-gold {
+  background: var(--bg-glass-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-gold);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.4), 0 0 20px -2px var(--gold-glow);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-gold:hover {
+  border-color: var(--gold-border-bright);
+  box-shadow: 0 8px 32px -1px rgba(0, 0, 0, 0.5), 0 0 30px 0 var(--gold-glow);
+  transform: translateY(-2px);
+}
+
+/* CRT Scanline Effect for Prover Daemon */
+.terminal-scanlines {
+  position: relative;
+  overflow: hidden;
+}
+
+.terminal-scanlines::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  z-index: 2;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* HUD Corner Brackets */
+.hud-box {
+  position: relative;
+}
+
+.hud-box::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--gold-champagne);
+  border-left: 2px solid var(--gold-champagne);
+  pointer-events: none;
+}
+
+.hud-box::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid var(--gold-champagne);
+  border-right: 2px solid var(--gold-champagne);
+  pointer-events: none;
+}
+
+/* Shimmer Animation */
+@keyframes goldShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.gold-shimmer-btn {
+  background: linear-gradient(90deg, #c9a86a 0%, #ffe6a3 50%, #c9a86a 100%);
+  background-size: 200% 100%;
+  animation: goldShimmer 4s infinite linear;
+  color: #0c0d10;
+  font-weight: 600;
+  border: none;
+  transition: all 0.25s ease;
+}
+
+.gold-shimmer-btn:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Pulse Beacon */
+@keyframes beaconPulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; filter: drop-shadow(0 0 6px var(--emerald-primary)); }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.beacon-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--emerald-primary);
+  display: inline-block;
+  animation: beaconPulse 2s infinite ease-in-out;
+}
+
+/* Blinking Cursor */
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.blinking-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  background-color: var(--emerald-primary);
+  vertical-align: middle;
+  animation: blink 1s infinite;
+  margin-left: 2px;
 }

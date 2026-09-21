@@ -1,98 +1,266 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import VaultEmblem from './VaultEmblem';
+import ContractAddressBar from './ContractAddressBar';
 import { useWallet } from '../contexts/WalletContext';
+import { Shield, Wallet, Power, Menu, X, ExternalLink } from 'lucide-react';
 
 export default function NavBar() {
   const location = useLocation();
-  const { address, isConnected, isConnecting, connect, disconnect, walletType } = useWallet();
+  const { address, isConnected, isConnecting, connect, disconnect } = useWallet();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Verify Credentials', path: '/verify' },
+    { name: 'Overview', path: '/' },
+    { name: 'Verify Credentials (ZK)', path: '/verify' },
     { name: 'Admin Deployer', path: '/admin' },
-    { name: 'Docs & About', path: '/about' },
+    { name: 'Architecture & Docs', path: '/about' },
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-outline-variant/30">
-      <div className="h-16 max-w-[1440px] mx-auto px-margin md:px-margin-desktop flex items-center justify-between gap-space-md">
-        {/* Brand & Network */}
-        <div className="flex items-center gap-space-lg">
-          <Link to="/" className="flex items-center gap-space-sm group">
-            <VaultEmblem size={32} className="h-8 w-auto object-contain" />
-            <div className="flex items-center tracking-tight">
-              <span className="font-headline-sm text-headline-sm text-on-surface font-semibold">Venture</span>
-              <span className="font-headline-sm text-headline-sm text-primary font-semibold">Gate</span>
-            </div>
-          </Link>
+    <>
+      <ContractAddressBar />
+      <header
+        style={{
+          position: 'sticky',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 40,
+          backgroundColor: 'rgba(12, 13, 16, 0.88)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(201, 168, 106, 0.2)',
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5)',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '1360px',
+            margin: '0 auto',
+            padding: '0 24px',
+            height: '70px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '20px',
+          }}
+        >
+          {/* Brand Identity */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <VaultEmblem size={34} />
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', alignItems: 'center', lineHeight: 1 }}>
+                  <span
+                    className="font-display"
+                    style={{
+                      fontSize: '20px',
+                      fontWeight: 700,
+                      letterSpacing: '-0.02em',
+                      color: '#ffffff',
+                    }}
+                  >
+                    Venture
+                  </span>
+                  <span
+                    className="font-display text-gold-gradient"
+                    style={{
+                      fontSize: '20px',
+                      fontWeight: 800,
+                      letterSpacing: '-0.02em',
+                    }}
+                  >
+                    Gate
+                  </span>
+                </div>
+                <span
+                  style={{
+                    fontSize: '9px',
+                    letterSpacing: '0.22em',
+                    textTransform: 'uppercase',
+                    color: 'var(--gold-champagne)',
+                    fontWeight: 600,
+                    marginTop: '2px',
+                  }}
+                >
+                  Sovereign ZK Gateway
+                </span>
+              </div>
+            </Link>
 
-          <div className="h-4 w-[1px] bg-outline-variant/40 hidden sm:block"></div>
+            <div
+              style={{
+                height: '24px',
+                width: '1px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                display: 'none',
+              }}
+              className="d-desktop-block"
+            />
 
-          <div className="hidden sm:flex items-center gap-space-xs px-space-sm py-0.5 rounded-full bg-surface-container-low border border-outline-variant/30">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
-            </span>
-            <span className="font-code-sm text-code-sm text-on-surface-variant uppercase tracking-wider">
-              Midnight Preprod
-            </span>
-          </div>
-        </div>
-
-        {/* Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-space-lg">
-          {navLinks.map((link) => {
-            const isActive = location.pathname === link.path;
-            return (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`font-body-md text-body-md transition-colors ${
-                  isActive
-                    ? 'text-primary font-medium'
-                    : 'text-on-surface-variant hover:text-primary'
-                }`}
-              >
-                {link.name}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Wallet Pill & Profile */}
-        <div className="flex items-center gap-space-sm">
-          {isConnected && address ? (
-            <div className="flex items-center gap-space-sm pl-space-sm pr-space-xs py-1 rounded-lg bg-surface-container-low border border-outline-variant/40 hover:border-primary/50 transition-colors">
-              <span className="material-symbols-outlined text-primary text-[18px]">account_balance_wallet</span>
-              <span className="font-code-md text-code-md text-on-surface font-medium hidden sm:inline-block">
-                {address.slice(0, 6)}...{address.slice(-4)}
-              </span>
-              <span className="h-1.5 w-1.5 rounded-full bg-secondary" title="Connected"></span>
-              <button
-                onClick={disconnect}
-                className="flex items-center justify-center p-1 text-on-surface-variant hover:text-error transition-colors"
-                title="Disconnect Wallet"
-              >
-                <span className="material-symbols-outlined text-[16px]">power_settings_new</span>
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => connect('preprod')}
-              disabled={isConnecting}
-              className="flex items-center gap-space-xs px-4 py-1.5 rounded-lg bg-gradient-to-r from-[#F3E5AB] via-primary to-primary-container text-on-primary font-body-md text-body-md font-semibold shadow-md hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50"
+            {/* Network Indicator Badge */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '4px 10px',
+                borderRadius: '20px',
+                backgroundColor: 'rgba(18, 20, 24, 0.8)',
+                border: '1px solid rgba(201, 168, 106, 0.25)',
+                fontSize: '11px',
+                letterSpacing: '0.04em',
+              }}
             >
-              <span className="material-symbols-outlined text-[18px]">wallet</span>
-              <span>{isConnecting ? 'Connecting...' : 'Connect 1AM'}</span>
-            </button>
-          )}
+              <span className="beacon-dot" />
+              <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Midnight Preprod</span>
+            </div>
+          </div>
 
-          <div className="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
-            <span className="material-symbols-outlined text-primary text-[18px]">shield</span>
+          {/* Desktop Navigation Links */}
+          <nav style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="desktop-nav">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path;
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  style={{
+                    padding: '8px 14px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: isActive ? 600 : 500,
+                    color: isActive ? 'var(--gold-light)' : 'var(--text-secondary)',
+                    backgroundColor: isActive ? 'rgba(212, 175, 55, 0.12)' : 'transparent',
+                    border: `1px solid ${isActive ? 'rgba(212, 175, 55, 0.3)' : 'transparent'}`,
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Wallet Actions */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {isConnected && address ? (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '6px 12px',
+                  borderRadius: '10px',
+                  backgroundColor: 'rgba(24, 26, 32, 0.9)',
+                  border: '1px solid rgba(201, 168, 106, 0.35)',
+                  boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Wallet size={15} color="var(--gold-champagne)" />
+                  <span
+                    className="font-mono"
+                    style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}
+                  >
+                    {address.slice(0, 6)}...{address.slice(-4)}
+                  </span>
+                </div>
+                <button
+                  onClick={disconnect}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '4px',
+                    color: 'var(--text-muted)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  title="Disconnect Wallet"
+                >
+                  <Power size={13} />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => connect('preprod')}
+                disabled={isConnecting}
+                className="gold-shimmer-btn"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '9px 18px',
+                  borderRadius: '10px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  cursor: isConnecting ? 'wait' : 'pointer',
+                  opacity: isConnecting ? 0.7 : 1,
+                }}
+              >
+                <Wallet size={15} color="#0c0d10" />
+                <span>{isConnecting ? 'Connecting...' : 'Connect 1AM'}</span>
+              </button>
+            )}
+
+            {/* Mobile Hamburger Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              style={{
+                display: 'none',
+                background: 'transparent',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: 'var(--text-primary)',
+                padding: '6px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+              }}
+              className="mobile-menu-btn"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
-      </div>
-    </header>
+
+        {/* Mobile Navigation Dropdown */}
+        {mobileMenuOpen && (
+          <div
+            style={{
+              padding: '16px 24px',
+              backgroundColor: 'rgba(12, 13, 16, 0.98)',
+              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px',
+            }}
+          >
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path;
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  style={{
+                    padding: '10px 14px',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: isActive ? 600 : 500,
+                    color: isActive ? 'var(--gold-light)' : 'var(--text-secondary)',
+                    backgroundColor: isActive ? 'rgba(212, 175, 55, 0.12)' : 'transparent',
+                  }}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </header>
+    </>
   );
 }
