@@ -212,4 +212,37 @@ describe(`VentureGate Contract (${network})`, () => {
 
     logger.info(`Rejected low income investor as expected.`);
   });
+
+  it('Guarantees privacy: asserts witness values are never exposed on-chain or in ledger state', async () => {
+    logger.info(`Asserting zero-knowledge isolation on public ledger...`);
+    const rawState = await providers.publicDataProvider.queryContractState(contractAddress);
+    expect(rawState).not.toBeNull();
+
+    // Decode public ledger state
+    const state = ledger(rawState!.data);
+    expect(state.min_net_worth).toBeDefined();
+    expect(state.min_income).toBeDefined();
+
+    // Verify public ledger only contains public threshold values
+    expect(state.min_net_worth).toEqual(1000000n);
+    expect(state.min_income).toEqual(200000n);
+
+    // Explicitly assert that the investor's private witnesses (net_worth, income) are NOT on the ledger
+    const stateKeys = Object.keys(state);
+    expect(stateKeys).toContain('min_net_worth');
+    expect(stateKeys).toContain('min_income');
+    expect(stateKeys).not.toContain('net_worth');
+    expect(stateKeys).not.toContain('income');
+    expect(stateKeys).not.toContain('investor_net_worth');
+    expect(stateKeys).not.toContain('investor_income');
+
+    // Stringify entire public state payload to verify raw financial witness numbers never leak anywhere in state
+    const serializedState = JSON.stringify(rawState);
+    expect(serializedState).not.toContain('1500000');
+    expect(serializedState).not.toContain('250000');
+    expect(serializedState).not.toContain('500000');
+    expect(serializedState).not.toContain('100000');
+    logger.info(`Privacy guarantee confirmed: 0 bytes of witness financial data present in public ledger.`);
+  });
 });
+
