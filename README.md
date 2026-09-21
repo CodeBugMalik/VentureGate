@@ -22,7 +22,7 @@ By decoupling compliance proof generation from plain-text record transmission, V
 * Video Demonstration Walkthrough: https://drive.google.com/file/d/1YtwpQ9pI5BKeaVO3u1MlNxITJrrNdOKG/view?usp=sharing
 * Midnight Preprod Contract Address: `8c34b5c05fe7ae32e5de68635a08d670c9a4ff5049ab2c2f76ffc95597b9082e`
 * Midnight Block Explorer: https://preprod.midnightexplorer.com/contracts/8c34b5c05fe7ae32e5de68635a08d670c9a4ff5049ab2c2f76ffc95597b9082e
-* Official X (Twitter) Profile: https://twitter.com/CodeBugMalik
+* Official X (Twitter) Post: https://x.com/itsVentureGate/status/2101975400998212022?s=20
 * Source Repository: https://github.com/CodeBugMalik/VentureGate
 
 ---
