@@ -83,10 +83,18 @@ Selected Category:
 
 | Domain | Attribute | Visibility | Description |
 |---|---|---|---|
-| Public State | `min_net_worth: Uint<32>` | On-Chain Public | Minimum net worth threshold required for accreditation. |
-| Public State | `min_income: Uint<32>` | On-Chain Public | Minimum annual personal income threshold required. |
+| Public State | `min_net_worth: Uint<32>` | On-Chain Public | Minimum liquid net worth threshold required for accreditation ($1,000,000). |
+| Public State | `min_income: Uint<32>` | On-Chain Public | Minimum annual personal income threshold required ($200,000). |
+| Public State | `min_joint_income: Uint<32>` | On-Chain Public | Minimum joint spousal income threshold ($300,000). |
+| Public State | `min_qp_capital: Uint<64>` | On-Chain Public | Qualified Purchaser threshold under Section 2(a)(51) ($5,000,000). |
+| Public State | `verified_investors_count: Counter` | On-Chain Public | Monotonically increasing counter of verified accredited investors. |
+| Public State | `attestation_registry: Set<Bytes<32>>` | On-Chain Public | On-chain registry of anonymous zero-knowledge attestation commitments. |
+| Public State | `admin_public_key: Bytes<32>` | On-Chain Public | Syndicate administrator cryptographic public key for governance. |
+| Public State | `is_paused: Boolean` | On-Chain Public | Emergency circuit breaker governance state. |
 | Private Witness | `net_worth: Uint<32>` | Device Memory Only | Actual evaluated liquid capital. Never leaves client enclave. |
 | Private Witness | `income: Uint<32>` | Device Memory Only | Actual verified annual income. Discarded after circuit synthesis. |
+| Private Witness | `joint_income: Uint<32>` | Device Memory Only | Actual joint household income. Discarded after circuit synthesis. |
+| Private Witness | `qp_capital: Uint<64>` | Device Memory Only | Actual investable securities portfolio. Discarded after circuit synthesis. |
 | Cryptographic Proof | `zk-SNARK Output` | On-Chain Public | 256-bit proof verifying inequality assertions without leakage. |
 
 ---
