@@ -69,16 +69,19 @@ async function main() {
     logger.info(`Building providers...`);
     const providers = buildProviders(wallet, zkConfigPath, config);
 
-    // Initial deployment rules (Net Worth >= $1,000,000, Income >= $200,000)
+    // Initial institutional deployment rules
     const minNetWorth = 1000000n;
     const minIncome = 200000n;
+    const minJointIncome = 300000n;
+    const minQpCapital = 5000000n;
+    const adminPk = new Uint8Array(32).fill(7);
     
     logger.info(`Deploying VentureGate Smart Contract to ${network}...`);
     const deployed = await deployContract<Contract>(providers, {
       compiledContract: CompiledVentureGateContract,
       privateStateId: PRIVATE_STATE_ID,
       initialPrivateState: {},
-      args: [minNetWorth, minIncome],
+      args: [minNetWorth, minIncome, minJointIncome, minQpCapital, adminPk],
     });
 
     const address = deployed.deployTxData.public.contractAddress;
