@@ -52,6 +52,8 @@ export default function AdminPage() {
   // Threshold controls
   const [netWorthThreshold, setNetWorthThreshold] = useState<number>(MIN_NET_WORTH_THRESHOLD);
   const [incomeThreshold, setIncomeThreshold] = useState<number>(MIN_INCOME_THRESHOLD);
+  const [jointIncomeThreshold, setJointIncomeThreshold] = useState<number>(300000);
+  const [qpCapitalThreshold, setQpCapitalThreshold] = useState<number>(5000000);
 
   useEffect(() => {
     const handleAddressChange = (e: any) => {
@@ -61,11 +63,15 @@ export default function AdminPage() {
     return () => window.removeEventListener('venturegate-contract-changed', handleAddressChange);
   }, []);
 
-  const adjustValue = (type: 'netWorth' | 'income', delta: number) => {
+  const adjustValue = (type: 'netWorth' | 'income' | 'jointIncome' | 'qpCapital', delta: number) => {
     if (type === 'netWorth') {
       setNetWorthThreshold((prev) => Math.max(100000, prev + delta));
-    } else {
+    } else if (type === 'income') {
       setIncomeThreshold((prev) => Math.max(25000, prev + delta));
+    } else if (type === 'jointIncome') {
+      setJointIncomeThreshold((prev) => Math.max(25000, prev + delta));
+    } else if (type === 'qpCapital') {
+      setQpCapitalThreshold((prev) => Math.max(500000, prev + delta));
     }
   };
 
@@ -89,10 +95,19 @@ export default function AdminPage() {
     try {
       const netWorthVal = netWorthThreshold;
       const incomeVal = incomeThreshold;
+      const jointIncomeVal = jointIncomeThreshold;
+      const qpCapitalVal = qpCapitalThreshold;
+      const adminPk = new Uint8Array(32).fill(7);
 
       const compiledContract = getCompiledContract();
       const initialPrivateState = {};
-      const constructorArgs: any[] = [BigInt(netWorthVal), BigInt(incomeVal)];
+      const constructorArgs: any[] = [
+        BigInt(netWorthVal),
+        BigInt(incomeVal),
+        BigInt(jointIncomeVal),
+        BigInt(qpCapitalVal),
+        adminPk,
+      ];
 
       setTelemetryStep(88);
       setTelemetryMessage('Awaiting transaction authorization in 1AM wallet popup...');
@@ -305,6 +320,124 @@ export default function AdminPage() {
               <button
                 type="button"
                 onClick={() => adjustValue('income', 25000)}
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: 'none',
+                  color: '#fff',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 700,
+                }}
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          {/* Joint Income Stepper */}
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+              Minimum Joint Spousal Income Threshold (USD)
+            </label>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                background: '#07080a',
+                padding: '8px 12px',
+                borderRadius: '8px',
+                border: '1px solid rgba(255,255,255,0.1)',
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => adjustValue('jointIncome', -25000)}
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: 'none',
+                  color: '#fff',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 700,
+                }}
+              >
+                -
+              </button>
+              <span
+                className="font-mono"
+                style={{ flex: 1, textAlign: 'center', fontSize: '18px', fontWeight: 700, color: 'var(--gold-light)' }}
+              >
+                ${jointIncomeThreshold.toLocaleString('en-US')}
+              </span>
+              <button
+                type="button"
+                onClick={() => adjustValue('jointIncome', 25000)}
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: 'none',
+                  color: '#fff',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 700,
+                }}
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          {/* Qualified Purchaser Stepper */}
+          <div style={{ marginBottom: '28px' }}>
+            <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+              Qualified Purchaser Capital Threshold (USD)
+            </label>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                background: '#07080a',
+                padding: '8px 12px',
+                borderRadius: '8px',
+                border: '1px solid rgba(255,255,255,0.1)',
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => adjustValue('qpCapital', -500000)}
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: 'none',
+                  color: '#fff',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  fontWeight: 700,
+                }}
+              >
+                -
+              </button>
+              <span
+                className="font-mono"
+                style={{ flex: 1, textAlign: 'center', fontSize: '18px', fontWeight: 700, color: 'var(--gold-light)' }}
+              >
+                ${qpCapitalThreshold.toLocaleString('en-US')}
+              </span>
+              <button
+                type="button"
+                onClick={() => adjustValue('qpCapital', 500000)}
                 style={{
                   background: 'rgba(255,255,255,0.08)',
                   border: 'none',

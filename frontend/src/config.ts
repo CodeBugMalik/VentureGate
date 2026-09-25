@@ -83,3 +83,6 @@ export const MIN_NET_WORTH_THRESHOLD = import.meta.env.VITE_MIN_NET_WORTH_THRESH
 export const MIN_INCOME_THRESHOLD = import.meta.env.VITE_MIN_INCOME_THRESHOLD
   ? parseInt(import.meta.env.VITE_MIN_INCOME_THRESHOLD, 10)
   : 200000;
+
+export const MIN_JOINT_INCOME_THRESHOLD = 300000;
+export const MIN_QP_CAPITAL_THRESHOLD = 5000000;
