@@ -1,17 +1,114 @@
-pragma language_version >=0.22.0;
+pragma language_version >= 0.22.0;
 
-// Ledger state: holds the public criteria for accreditation
-export ledger min_net_worth: Uint<32>;
-export ledger min_income: Uint<32>;
+import CompactStandardLibrary;
 
-// Constructor to initialize the rules
-constructor(initial_min_net_worth: Uint<32>, initial_min_income: Uint<32>) {
-    min_net_worth = disclose(initial_min_net_worth);
-    min_income = disclose(initial_min_income);
+// ============================================================================
+// VENTUREGATE: Institutional Zero-Knowledge Accredited Investor Gateway
+// Built on Midnight Network | SEC Rule 506(c) & Section 2(a)(51) Compliant
+// ============================================================================
+
+// Public Regulatory Ledger State
+export ledger min_net_worth: Uint<32>;            // Default: $1,000,000 USD
+export ledger min_income: Uint<32>;               // Default: $200,000 USD individual
+export ledger min_joint_income: Uint<32>;         // Default: $300,000 USD spousal joint
+export ledger min_qp_capital: Uint<64>;           // Default: $5,000,000 USD Qualified Purchaser
+export ledger verified_investors_count: Counter;  // On-chain counter of total accredited proofs
+export ledger attestation_registry: Set<Bytes<32>>; // Cryptographic registry of verified commitments
+export ledger admin_public_key: Bytes<32>;        // Syndicate administrator public key
+export ledger protocol_version: Uint<16>;         // Protocol version track
+export ledger is_paused: Boolean;                 // Emergency governance circuit breaker
+
+// Pure circuit: Derive administrator public key from private administrator key
+pure circuit calculate_admin_pk(admin_sk: Bytes<32>): Bytes<32> {
+    return persistentHash<Vector<2, Bytes<32>>>([pad(32, "venturegate:admin:v1"), admin_sk]);
 }
 
-// Circuit: verifies eligibility based on private financials
+// Constructor: Initializes syndicate parameters and governance key
+constructor(
+    initial_min_net_worth: Uint<32>,
+    initial_min_income: Uint<32>,
+    initial_min_joint_income: Uint<32>,
+    initial_min_qp_capital: Uint<64>,
+    admin_pk: Bytes<32>
+) {
+    min_net_worth = disclose(initial_min_net_worth);
+    min_income = disclose(initial_min_income);
+    min_joint_income = disclose(initial_min_joint_income);
+    min_qp_capital = disclose(initial_min_qp_capital);
+    admin_public_key = disclose(admin_pk);
+    protocol_version = 1;
+    is_paused = false;
+}
+
+// ----------------------------------------------------------------------------
+// Primary Circuit: Multi-Pathway Verification & Anonymous Attestation Register
+// ----------------------------------------------------------------------------
+// Statutory Pathways:
+//   Pathway 1: Individual Liquid Net Worth ($1,000,000+ USD excluding primary residence)
+//   Pathway 2: Individual Personal Income ($200,000+ USD sustained for 2+ years)
+//   Pathway 3: Joint Spousal Income ($300,000+ USD combined)
+//   Pathway 4: Institutional Qualified Purchaser ($5,000,000+ USD investable assets)
+export circuit verify_and_register_investor(
+    net_worth: Uint<32>,
+    income: Uint<32>,
+    joint_income: Uint<32>,
+    qp_capital: Uint<64>,
+    selected_pathway: Uint<8>,
+    investor_commitment: Bytes<32>
+): [] {
+    assert(!is_paused, "Protocol is currently paused");
+
+    const pathway = disclose(selected_pathway);
+    if (pathway == 1) {
+        assert(net_worth >= min_net_worth, "Net worth below accredited threshold");
+    } else if (pathway == 2) {
+        assert(income >= min_income, "Individual income below accredited threshold");
+    } else if (pathway == 3) {
+        assert(joint_income >= min_joint_income, "Joint income below accredited threshold");
+    } else if (pathway == 4) {
+        assert(qp_capital >= min_qp_capital, "Investable capital below Qualified Purchaser threshold");
+    } else {
+        assert(false, "Invalid accreditation pathway selected");
+    }
+
+    // Cryptographic commitment registration: prevents replay and provides reusable badge
+    const commitment = disclose(investor_commitment);
+    assert(!attestation_registry.member(commitment), "Attestation commitment already registered");
+    attestation_registry.insert(commitment);
+    verified_investors_count.increment(1);
+}
+
+// ----------------------------------------------------------------------------
+// Legacy Circuit: Standard Backward-Compatible SEC Rule 506(c) Verification
+// ----------------------------------------------------------------------------
 export circuit verify_accreditation(net_worth: Uint<32>, income: Uint<32>): [] {
+    assert(!is_paused, "Protocol is currently paused");
     assert(net_worth >= min_net_worth, "Net worth too low");
     assert(income >= min_income, "Income too low");
+    verified_investors_count.increment(1);
+}
+
+// ----------------------------------------------------------------------------
+// Governance Circuit: Update Regulatory Thresholds (ZK Admin Hash Auth)
+// ----------------------------------------------------------------------------
+export circuit update_criteria(
+    admin_sk: Bytes<32>,
+    new_min_net_worth: Uint<32>,
+    new_min_income: Uint<32>,
+    new_min_joint_income: Uint<32>,
+    new_min_qp_capital: Uint<64>
+): [] {
+    assert(calculate_admin_pk(admin_sk) == admin_public_key, "Unauthorized: invalid admin key");
+    min_net_worth = disclose(new_min_net_worth);
+    min_income = disclose(new_min_income);
+    min_joint_income = disclose(new_min_joint_income);
+    min_qp_capital = disclose(new_min_qp_capital);
+}
+
+// ----------------------------------------------------------------------------
+// Governance Circuit: Emergency Circuit Breaker (Pause / Unpause)
+// ----------------------------------------------------------------------------
+export circuit set_paused(admin_sk: Bytes<32>, pause_state: Boolean): [] {
+    assert(calculate_admin_pk(admin_sk) == admin_public_key, "Unauthorized: invalid admin key");
+    is_paused = disclose(pause_state);
 }

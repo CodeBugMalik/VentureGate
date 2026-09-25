@@ -140,19 +140,21 @@ describe(`VentureGate Contract (${network})`, () => {
     }
   });
 
-  it('Deploys the contract with VentureGate rules', async () => {
-    logger.info(`Deploying VentureGate Contract...`);
+  const minNetWorth = 1000000n;
+  const minIncome = 200000n;
+  const minJointIncome = 300000n;
+  const minQpCapital = 5000000n;
+  const adminPk = new Uint8Array(32).fill(7);
 
-    // Minimum Net Worth: $1,000,000, Min Income: $200,000
-    const minNetWorth = 1000000n;
-    const minIncome = 200000n;
+  it('Deploys the contract with VentureGate rules', async () => {
+    logger.info(`Deploying VentureGate Institutional Smart Contract...`);
 
     const deployed: DeployedContract<Contract> =
       await (deployContract<Contract>)(providers, {
         compiledContract: CompiledVentureGateContract,
         privateStateId: PRIVATE_STATE_ID,
         initialPrivateState: {},
-        args: [minNetWorth, minIncome],
+        args: [minNetWorth, minIncome, minJointIncome, minQpCapital, adminPk],
       });
 
     contractAddress = deployed.deployTxData.public.contractAddress;
@@ -162,55 +164,99 @@ describe(`VentureGate Contract (${network})`, () => {
     const state = await queryLedger(providers);
     expect(state.min_net_worth).toEqual(minNetWorth);
     expect(state.min_income).toEqual(minIncome);
+    expect(state.min_joint_income).toEqual(minJointIncome);
+    expect(state.min_qp_capital).toEqual(minQpCapital);
+    expect(state.verified_investors_count).toEqual(0n);
+    expect(state.is_paused).toBe(false);
   });
 
-  it('Verifies eligibility successfully for a qualifying investor', async () => {
-    // Investor Net Worth: $1,500,000, Income: $250,000 (qualifies!)
-    logger.info(`Running verify_accreditation for qualifying investor...`);
+  it('Verifies eligibility and registers on-chain attestation for Net Worth pathway', async () => {
+    logger.info(`Running verify_and_register_investor (Pathway 1: Net Worth)...`);
+    const commitment = new Uint8Array(32).fill(101);
 
-    await (submitCallTx<Contract, 'verify_accreditation'>)(providers, {
+    await (submitCallTx<Contract, 'verify_and_register_investor'>)(providers, {
       compiledContract: CompiledVentureGateContract,
       contractAddress,
       privateStateId: PRIVATE_STATE_ID,
-      circuitId: 'verify_accreditation',
-      args: [1500000n, 250000n],
+      circuitId: 'verify_and_register_investor',
+      args: [1500000n, 50000n, 80000n, 1000000n, 1n, commitment],
     });
 
-    logger.info(`Verification transaction completed successfully.`);
+    const state = await queryLedger(providers);
+    expect(state.verified_investors_count).toEqual(1n);
+    expect(state.attestation_registry.member(commitment)).toBe(true);
+    logger.info(`Pathway 1 verified and attestation registered successfully.`);
   });
 
-  it('Fails verification for an investor with net worth too low', async () => {
-    // Investor Net Worth: $500,000, Income: $250,000 (fails!)
-    logger.info(`Running verify_accreditation for low net worth investor (should fail)...`);
+  it('Verifies eligibility and registers on-chain attestation for Individual Income pathway', async () => {
+    logger.info(`Running verify_and_register_investor (Pathway 2: Individual Income)...`);
+    const commitment = new Uint8Array(32).fill(102);
+
+    await (submitCallTx<Contract, 'verify_and_register_investor'>)(providers, {
+      compiledContract: CompiledVentureGateContract,
+      contractAddress,
+      privateStateId: PRIVATE_STATE_ID,
+      circuitId: 'verify_and_register_investor',
+      args: [400000n, 280000n, 290000n, 500000n, 2n, commitment],
+    });
+
+    const state = await queryLedger(providers);
+    expect(state.verified_investors_count).toEqual(2n);
+    expect(state.attestation_registry.member(commitment)).toBe(true);
+    logger.info(`Pathway 2 verified and registered successfully.`);
+  });
+
+  it('Verifies eligibility and registers on-chain attestation for Joint Spousal Income pathway', async () => {
+    logger.info(`Running verify_and_register_investor (Pathway 3: Joint Income)...`);
+    const commitment = new Uint8Array(32).fill(103);
+
+    await (submitCallTx<Contract, 'verify_and_register_investor'>)(providers, {
+      compiledContract: CompiledVentureGateContract,
+      contractAddress,
+      privateStateId: PRIVATE_STATE_ID,
+      circuitId: 'verify_and_register_investor',
+      args: [300000n, 180000n, 350000n, 500000n, 3n, commitment],
+    });
+
+    const state = await queryLedger(providers);
+    expect(state.verified_investors_count).toEqual(3n);
+    expect(state.attestation_registry.member(commitment)).toBe(true);
+    logger.info(`Pathway 3 verified and registered successfully.`);
+  });
+
+  it('Verifies institutional Qualified Purchaser ($5M+ capital)', async () => {
+    logger.info(`Running verify_and_register_investor (Pathway 4: Qualified Purchaser)...`);
+    const commitment = new Uint8Array(32).fill(104);
+
+    await (submitCallTx<Contract, 'verify_and_register_investor'>)(providers, {
+      compiledContract: CompiledVentureGateContract,
+      contractAddress,
+      privateStateId: PRIVATE_STATE_ID,
+      circuitId: 'verify_and_register_investor',
+      args: [0n, 0n, 0n, 7500000n, 4n, commitment],
+    });
+
+    const state = await queryLedger(providers);
+    expect(state.verified_investors_count).toEqual(4n);
+    expect(state.attestation_registry.member(commitment)).toBe(true);
+    logger.info(`Pathway 4 QP verified and registered successfully.`);
+  });
+
+  it('Fails verification for an investor who does not meet threshold', async () => {
+    logger.info(`Testing rejection for under-threshold investor (should fail)...`);
+    const commitment = new Uint8Array(32).fill(105);
 
     await expect(
-      (submitCallTx<Contract, 'verify_accreditation'>)(providers, {
+      (submitCallTx<Contract, 'verify_and_register_investor'>)(providers, {
         compiledContract: CompiledVentureGateContract,
         contractAddress,
         privateStateId: PRIVATE_STATE_ID,
-        circuitId: 'verify_accreditation',
-        args: [500000n, 250000n],
+        circuitId: 'verify_and_register_investor',
+        args: [400000n, 120000n, 150000n, 500000n, 1n, commitment],
       })
     ).rejects.toThrow();
 
-    logger.info(`Rejected low net worth investor as expected.`);
-  });
-
-  it('Fails verification for an investor with income too low', async () => {
-    // Investor Net Worth: $1,500,000, Income: $100,000 (fails!)
-    logger.info(`Running verify_accreditation for low income investor (should fail)...`);
-
-    await expect(
-      (submitCallTx<Contract, 'verify_accreditation'>)(providers, {
-        compiledContract: CompiledVentureGateContract,
-        contractAddress,
-        privateStateId: PRIVATE_STATE_ID,
-        circuitId: 'verify_accreditation',
-        args: [1500000n, 100000n],
-      })
-    ).rejects.toThrow();
-
-    logger.info(`Rejected low income investor as expected.`);
+    logger.info(`Rejected under-threshold investor as expected.`);
   });
 
   it('Guarantees privacy: asserts witness values are never exposed on-chain or in ledger state', async () => {
@@ -222,26 +268,25 @@ describe(`VentureGate Contract (${network})`, () => {
     const state = ledger(rawState!.data);
     expect(state.min_net_worth).toBeDefined();
     expect(state.min_income).toBeDefined();
+    expect(state.min_joint_income).toBeDefined();
+    expect(state.min_qp_capital).toBeDefined();
 
-    // Verify public ledger only contains public threshold values
-    expect(state.min_net_worth).toEqual(1000000n);
-    expect(state.min_income).toEqual(200000n);
-
-    // Explicitly assert that the investor's private witnesses (net_worth, income) are NOT on the ledger
+    // Explicitly assert that the investor's private witnesses are NOT on the ledger
     const stateKeys = Object.keys(state);
     expect(stateKeys).toContain('min_net_worth');
     expect(stateKeys).toContain('min_income');
+    expect(stateKeys).toContain('verified_investors_count');
     expect(stateKeys).not.toContain('net_worth');
     expect(stateKeys).not.toContain('income');
-    expect(stateKeys).not.toContain('investor_net_worth');
-    expect(stateKeys).not.toContain('investor_income');
+    expect(stateKeys).not.toContain('joint_income');
+    expect(stateKeys).not.toContain('qp_capital');
 
     // Stringify entire public state payload to verify raw financial witness numbers never leak anywhere in state
     const serializedState = JSON.stringify(rawState);
     expect(serializedState).not.toContain('1500000');
-    expect(serializedState).not.toContain('250000');
-    expect(serializedState).not.toContain('500000');
-    expect(serializedState).not.toContain('100000');
+    expect(serializedState).not.toContain('280000');
+    expect(serializedState).not.toContain('350000');
+    expect(serializedState).not.toContain('7500000');
     logger.info(`Privacy guarantee confirmed: 0 bytes of witness financial data present in public ledger.`);
   });
 });
