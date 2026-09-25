@@ -13,7 +13,8 @@ export default function NavBar() {
   const navLinks = [
     { name: 'Overview', path: '/' },
     { name: 'Verify Credentials (ZK)', path: '/verify' },
-    { name: 'Admin Deployer', path: '/admin' },
+    { name: 'Attestation Registry', path: '/registry' },
+    { name: 'Syndicate Admin', path: '/admin' },
     { name: 'Architecture & Docs', path: '/about' },
   ];
 

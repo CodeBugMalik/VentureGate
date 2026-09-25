@@ -152,6 +152,27 @@ export default function LandingPage() {
           </Link>
 
           <Link
+            to="/registry"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '14px 24px',
+              borderRadius: '12px',
+              fontSize: '15px',
+              fontWeight: 600,
+              color: 'var(--gold-light)',
+              backgroundColor: 'rgba(212, 175, 55, 0.12)',
+              border: '1px solid rgba(201, 168, 106, 0.4)',
+              backdropFilter: 'blur(10px)',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <Shield size={16} color="var(--gold-champagne)" />
+            <span>Audit Badge Registry</span>
+          </Link>
+
+          <Link
             to="/admin"
             style={{
               display: 'inline-flex',
@@ -169,7 +190,7 @@ export default function LandingPage() {
             }}
           >
             <Cpu size={16} color="var(--gold-champagne)" />
-            <span>Deploy Contract Portal</span>
+            <span>Syndicate Admin</span>
           </Link>
 
           <Link

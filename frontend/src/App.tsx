@@ -7,6 +7,7 @@ import LandingPage from './pages/LandingPage';
 import VerifyPage from './pages/VerifyPage';
 import AdminPage from './pages/AdminPage';
 import AboutPage from './pages/AboutPage';
+import RegistryPage from './pages/RegistryPage';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/verify" element={<VerifyPage />} />
+            <Route path="/registry" element={<RegistryPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/about" element={<AboutPage />} />
           </Routes>
