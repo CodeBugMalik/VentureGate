@@ -27,6 +27,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import VaultEmblem from '../components/VaultEmblem';
+import './WorkspacePages.css';
 
 interface QueryResult {
   searched: boolean;
@@ -132,9 +133,16 @@ export default function RegistryPage() {
   };
 
   return (
-    <div style={{ maxWidth: '1360px', margin: '0 auto', padding: '40px 24px 80px' }}>
+    <div className="page console-page workspace-page registry-page" style={{ maxWidth: '1360px', margin: '0 auto', padding: '40px 24px 80px' }}>
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+      <header className="workspace-header registry-header" style={{ textAlign: 'center', marginBottom: '36px' }}>
+        <nav className="workspace-breadcrumb" aria-label="Registry workspace">
+          <span className="workspace-breadcrumb-current">Workspace</span>
+          <span aria-hidden="true">/</span>
+          <span>Public receipts</span>
+          <span aria-hidden="true">/</span>
+          <span>Registry</span>
+        </nav>
         <div
           style={{
             display: 'inline-flex',
@@ -162,13 +170,19 @@ export default function RegistryPage() {
           For syndicates, fund managers, and tokenized launchpads. Verify an investor's SEC Rule 506(c) zero-knowledge
           compliance status on Midnight Preprod without requesting a single private tax return or bank statement.
         </p>
-      </div>
+        <div className="workspace-header-aside" aria-label="Registry guidance">
+          <span><strong>Lookup</strong> paste a 32-byte commitment</span>
+          <span><strong>Compare</strong> public criteria only</span>
+          <span><strong>Record</strong> copy an audit-ready summary</span>
+        </div>
+      </header>
 
       {/* Protocol Metrics Bar */}
       <div
+        className="workspace-metrics registry-metrics"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 210px), 1fr))',
           gap: '16px',
           marginBottom: '36px',
         }}
@@ -219,9 +233,9 @@ export default function RegistryPage() {
       </div>
 
       {/* Main Search / Audit Container */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px', alignItems: 'start' }}>
+      <div className="workspace-columns registry-columns" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '28px', alignItems: 'start' }}>
         {/* Left: Input Form */}
-        <div className="glass-panel" style={{ padding: '32px', borderRadius: '18px' }}>
+        <div className="glass-panel registry-query-panel" style={{ padding: '32px', borderRadius: '18px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
             <Search size={20} color="var(--gold-champagne)" />
             <h2 className="font-display" style={{ fontSize: '20px', fontWeight: 700, color: '#fff', margin: 0 }}>
@@ -332,7 +346,7 @@ export default function RegistryPage() {
         </div>
 
         {/* Right: Certificate / Verification Results */}
-        <div>
+        <div className="registry-result-column">
           {queryResult?.searched ? (
             queryResult.isValid ? (
               <div

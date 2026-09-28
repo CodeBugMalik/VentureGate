@@ -12,6 +12,7 @@ import {
   MIN_INCOME_THRESHOLD,
   cleanContractAddress,
 } from '../config';
+import './WorkspacePages.css';
 import {
   Cpu,
   Layers,
@@ -158,9 +159,16 @@ export default function AdminPage() {
   };
 
   return (
-    <div style={{ maxWidth: '1360px', margin: '0 auto', padding: '40px 24px 80px' }}>
+    <div className="page console-page workspace-page admin-page" style={{ maxWidth: '1360px', margin: '0 auto', padding: '40px 24px 80px' }}>
       {/* Top Banner & Header */}
-      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+      <header className="workspace-header admin-header" style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <nav className="workspace-breadcrumb" aria-label="Administration workspace">
+          <span className="workspace-breadcrumb-current">Workspace</span>
+          <span aria-hidden="true">/</span>
+          <span>Protocol controls</span>
+          <span aria-hidden="true">/</span>
+          <span>Deployment</span>
+        </nav>
         <div
           style={{
             display: 'inline-flex',
@@ -188,19 +196,25 @@ export default function AdminPage() {
           Deploy custom regulatory thresholds directly to Midnight Preprod with zero-gas DUST fee settlement using 1AM
           Wallet.
         </p>
-      </div>
+        <div className="workspace-header-aside" aria-label="Deployment sequence">
+          <span><strong>Define</strong> constructor thresholds</span>
+          <span><strong>Authorize</strong> with the 1AM wallet</span>
+          <span><strong>Activate</strong> the resulting contract</span>
+        </div>
+      </header>
 
       {/* Main Deployment Deck */}
       <div
+        className="workspace-columns admin-columns"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
           gap: '30px',
           alignItems: 'start',
         }}
       >
         {/* Left Column: Constructor Threshold Configuration */}
-        <div className="glass-panel-gold" style={{ padding: '32px' }}>
+        <div className="glass-panel-gold admin-config-panel" style={{ padding: '32px' }}>
           <div style={{ marginBottom: '24px' }}>
             <div
               style={{
@@ -525,7 +539,7 @@ export default function AdminPage() {
 
         {/* Right Column: Deployment Telemetry & Result Deck */}
         <div
-          className="glass-panel terminal-scanlines"
+          className="glass-panel terminal-scanlines admin-telemetry-panel"
           style={{
             backgroundColor: '#07080a',
             border: '1px solid rgba(201, 168, 106, 0.35)',
