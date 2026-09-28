@@ -55,23 +55,9 @@ export default function ContractAddressBar() {
   const isDefault = activeAddress === DEFAULT_PREPROD_CONTRACT_ADDRESS;
 
   return (
-    <div
-      style={{
-        background: 'rgba(18, 20, 24, 0.85)',
-        backdropFilter: 'blur(12px)',
-        borderBottom: '1px solid rgba(201, 168, 106, 0.2)',
-        padding: '8px 24px',
-        fontSize: '13px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '12px',
-        position: 'relative',
-        zIndex: 50,
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+    <div className="contract-bar">
+      <div className="contract-bar-inner">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
         <span
           style={{
             display: 'inline-flex',
@@ -266,6 +252,7 @@ export default function ContractAddressBar() {
             <RefreshCw size={11} /> Reset to Official
           </button>
         )}
+      </div>
       </div>
     </div>
   );
