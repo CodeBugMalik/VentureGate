@@ -13,12 +13,20 @@ import {
   BookOpen,
 } from 'lucide-react';
 import { DEFAULT_PREPROD_CONTRACT_ADDRESS } from '../config';
+import './WorkspacePages.css';
 
 export default function AboutPage() {
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 24px 100px' }}>
+    <div className="page workspace-page about-page" style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 24px 100px' }}>
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+      <header className="workspace-header docs-header" style={{ textAlign: 'center', marginBottom: '60px' }}>
+        <nav className="workspace-breadcrumb" aria-label="Documentation workspace">
+          <span className="workspace-breadcrumb-current">Workspace</span>
+          <span aria-hidden="true">/</span>
+          <span>Documentation</span>
+          <span aria-hidden="true">/</span>
+          <span>Architecture</span>
+        </nav>
         <div
           style={{
             display: 'inline-flex',
@@ -46,13 +54,33 @@ export default function AboutPage() {
           How Midnight's dual-state Compact execution eliminates third-party document honeypots for private placement
           compliance.
         </p>
-      </div>
+        <div className="workspace-header-aside" aria-label="Documentation guide">
+          <span><strong>Read</strong> why document custody fails</span>
+          <span><strong>Trace</strong> the private witness boundary</span>
+          <span><strong>Inspect</strong> what the ledger reveals</span>
+        </div>
+      </header>
+
+      <div className="docs-layout">
+        <aside className="docs-index" aria-label="On this page">
+          <span className="docs-index-title">On this page</span>
+          <a href="#privacy-pillars">The privacy inversion</a>
+          <a href="#contract-spec">Compact specification</a>
+          <a href="#visibility-matrix">Visibility matrix</a>
+          <div className="docs-index-note">
+            <Lock size={15} />
+            <span>Private witnesses stay local. Public state stays inspectable.</span>
+          </div>
+        </aside>
+        <main className="docs-main">
 
       {/* 3 Pillar Cards */}
       <div
+        id="privacy-pillars"
+        className="docs-pillars"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
           gap: '24px',
           marginBottom: '60px',
         }}
@@ -135,7 +163,8 @@ export default function AboutPage() {
 
       {/* Compact Smart Contract Breakdown */}
       <div
-        className="glass-panel-gold"
+        id="contract-spec"
+        className="glass-panel-gold docs-spec-panel"
         style={{
           padding: '40px',
           marginBottom: '60px',
@@ -186,7 +215,7 @@ export circuit verify_accreditation(net_worth: Uint<32>, income: Uint<32>): [] {
 }`}
         </pre>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+        <div className="docs-spec-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '20px' }}>
           <div style={{ padding: '16px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px' }}>
             <div style={{ color: 'var(--gold-light)', fontWeight: 600, fontSize: '13px', marginBottom: '6px' }}>
               Public Ledger State
@@ -221,7 +250,8 @@ export circuit verify_accreditation(net_worth: Uint<32>, income: Uint<32>): [] {
 
       {/* Observer Privacy Matrix Table */}
       <div
-        className="glass-panel"
+        id="visibility-matrix"
+        className="glass-panel docs-matrix-panel"
         style={{
           padding: '40px',
           border: '1px solid rgba(201, 168, 106, 0.25)',
@@ -275,7 +305,7 @@ export circuit verify_accreditation(net_worth: Uint<32>, income: Uint<32>): [] {
       </div>
 
       {/* Bottom Actions */}
-      <div style={{ textAlign: 'center' }}>
+      <div className="docs-actions" style={{ textAlign: 'center' }}>
         <Link
           to="/verify"
           className="gold-shimmer-btn"
@@ -292,6 +322,8 @@ export circuit verify_accreditation(net_worth: Uint<32>, income: Uint<32>): [] {
           <span>Launch Verification Terminal</span>
           <ArrowRight size={16} />
         </Link>
+      </div>
+        </main>
       </div>
     </div>
   );
