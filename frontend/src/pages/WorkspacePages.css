@@ -1,0 +1,545 @@
+:root {
+  --workspace-ink: #000000;
+  --workspace-ink-soft: #08080c;
+  --workspace-pearl: #f2f0ff;
+  --workspace-lavender: #aa96ff;
+  --workspace-glacier: #8dd9f1;
+  --workspace-mint: #70e8c4;
+  --workspace-rule: rgba(242, 240, 255, 0.14);
+  --workspace-muted: #a7aabd;
+}
+
+/* Internal pages share the unified 1380px container rhythm and seamless transparent background. */
+.workspace-page {
+  width: min(1380px, calc(100% - 48px)) !important;
+  max-width: none !important;
+  margin: 0 auto !important;
+  padding: 36px 0 92px !important;
+  color: var(--workspace-pearl);
+  background: transparent !important;
+}
+
+.workspace-page::before,
+.workspace-page::after {
+  content: none !important;
+}
+
+.workspace-page .workspace-header {
+  position: relative;
+  z-index: 1;
+  text-align: left !important;
+  margin-bottom: 30px !important;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--workspace-rule);
+}
+
+.workspace-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 30px;
+  color: #737990;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.workspace-breadcrumb-current {
+  color: var(--workspace-glacier);
+}
+
+.workspace-page .workspace-header > div:first-of-type {
+  margin-bottom: 12px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--workspace-lavender) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+  text-transform: none !important;
+}
+
+.workspace-page .workspace-header > div:first-of-type svg {
+  color: var(--workspace-lavender) !important;
+}
+
+.workspace-page .workspace-header h1 {
+  max-width: 840px;
+  margin: 0 0 13px !important;
+  color: var(--workspace-pearl) !important;
+  font-size: clamp(2.4rem, 5vw, 4.6rem) !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.065em !important;
+}
+
+.workspace-page .workspace-header p {
+  max-width: 720px !important;
+  margin: 0 !important;
+  color: var(--workspace-muted) !important;
+  font-size: 15px !important;
+  line-height: 1.65 !important;
+}
+
+.workspace-header-aside {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 22px;
+  color: #858aa0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.workspace-header-aside span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.workspace-header-aside strong {
+  color: var(--workspace-mint);
+  font-weight: 500;
+}
+
+.workspace-page .glass-panel,
+.workspace-page .glass-panel-gold {
+  background: rgba(13, 19, 36, 0.88) !important;
+  border: 1px solid var(--workspace-rule) !important;
+  border-radius: 3px !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.workspace-page .glass-panel:hover,
+.workspace-page .glass-panel-gold:hover {
+  box-shadow: none !important;
+}
+
+.workspace-page input,
+.workspace-page textarea {
+  background: #080d1b !important;
+  border-color: rgba(170, 150, 255, 0.3) !important;
+  border-radius: 2px !important;
+}
+
+.workspace-page input:focus,
+.workspace-page textarea:focus {
+  border-color: var(--workspace-lavender) !important;
+}
+
+.workspace-page button:not(.gold-shimmer-btn),
+.workspace-page a {
+  min-height: 40px;
+}
+
+.workspace-page .gold-shimmer-btn {
+  min-height: 48px;
+  border-radius: 2px !important;
+  background: var(--workspace-lavender) !important;
+  color: var(--workspace-ink) !important;
+  box-shadow: 8px 8px 0 rgba(112, 232, 196, 0.12) !important;
+}
+
+.workspace-page .gold-shimmer-btn:hover {
+  background: var(--workspace-pearl) !important;
+  transform: translate(-2px, -2px);
+}
+
+/* Verification: a private input desk facing a public proof terminal. */
+.verify-page .contract-rail {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin-bottom: 34px !important;
+  padding: 15px 18px !important;
+  border-top: 2px solid var(--workspace-glacier) !important;
+  border-radius: 0 !important;
+}
+
+.verify-page .contract-rail > div:first-child {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.verify-page .contract-rail .text-gold-gradient {
+  background: none !important;
+  color: var(--workspace-glacier) !important;
+  -webkit-text-fill-color: currentColor;
+}
+
+.verify-columns {
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr) !important;
+  gap: 36px !important;
+}
+
+.verify-input-column {
+  min-width: 0;
+}
+
+.verify-output-column {
+  min-width: 0;
+  position: sticky;
+  top: 92px;
+}
+
+.verify-page .verify-input-column .glass-panel {
+  border-top: 2px solid var(--workspace-lavender) !important;
+}
+
+.verify-page .verify-output-column .glass-panel:first-child {
+  border-top: 2px solid var(--workspace-mint) !important;
+}
+
+.verify-page .verify-output-column .font-mono {
+  color: var(--workspace-glacier) !important;
+}
+
+/* Registry: metrics read as a ledger rail; query and receipt are asymmetric. */
+.registry-page .registry-metrics {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(min(100%, 210px), 1fr)) !important;
+  gap: 0 !important;
+  margin-bottom: 38px !important;
+  border-top: 1px solid var(--workspace-rule);
+  border-bottom: 1px solid var(--workspace-rule);
+}
+
+.registry-page .registry-metrics > .glass-panel {
+  min-width: 0;
+  border-width: 0 1px 0 0 !important;
+  border-radius: 0 !important;
+  padding: 18px 20px !important;
+}
+
+.registry-page .registry-metrics > .glass-panel:last-child {
+  border-right: 0 !important;
+}
+
+.registry-page .registry-metrics .text-gold-gradient {
+  background: none !important;
+  color: var(--workspace-lavender) !important;
+  -webkit-text-fill-color: currentColor;
+}
+
+.registry-columns {
+  grid-template-columns: minmax(0, 0.76fr) minmax(0, 1.24fr) !important;
+  gap: 42px !important;
+}
+
+.registry-query-panel {
+  position: relative;
+  border-top: 2px solid var(--workspace-lavender) !important;
+}
+
+.registry-query-panel::before {
+  content: 'RECEIPT LOOKUP';
+  display: block;
+  margin-bottom: 16px;
+  color: var(--workspace-glacier);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.registry-result-column {
+  min-width: 0;
+}
+
+.registry-result-column > .glass-panel {
+  min-height: 340px;
+  border-top: 2px solid var(--workspace-mint) !important;
+}
+
+/* Admin: configuration is a ruled worksheet; telemetry is a separate black instrument. */
+.admin-page .admin-columns {
+  align-items: stretch !important;
+}
+
+.admin-page .admin-config-panel {
+  border-top: 2px solid var(--workspace-lavender) !important;
+  border-radius: 0 !important;
+}
+
+.admin-page .admin-config-panel > div:first-child {
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--workspace-rule);
+}
+
+.admin-page .admin-config-panel > div:first-child > div:first-child {
+  color: var(--workspace-glacier) !important;
+  letter-spacing: 0.08em !important;
+  text-transform: none !important;
+}
+
+.admin-page .admin-telemetry-panel {
+  border-top: 2px solid var(--workspace-mint) !important;
+  border-radius: 0 !important;
+  background: #080d1b !important;
+}
+
+.admin-page .admin-telemetry-panel > div:first-child {
+  background: #0d1324 !important;
+  border-bottom-color: var(--workspace-rule) !important;
+}
+
+.admin-page .admin-telemetry-panel > div:nth-child(2) > div {
+  background: linear-gradient(90deg, var(--workspace-lavender), var(--workspace-mint)) !important;
+}
+
+.admin-page .admin-config-panel button:not(.gold-shimmer-btn) {
+  min-width: 40px;
+  min-height: 40px;
+  border: 1px solid var(--workspace-rule) !important;
+}
+
+/* Documentation: persistent index plus a long-form reading column. */
+.docs-layout {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+
+.docs-index {
+  position: sticky;
+  top: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding-top: 4px;
+  border-top: 2px solid var(--workspace-lavender);
+}
+
+.docs-index-title {
+  margin: 10px 0 8px;
+  color: var(--workspace-pearl);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.docs-index a {
+  min-height: auto !important;
+  padding: 2px 0;
+  color: #9296a9;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.docs-index a:hover {
+  color: var(--workspace-glacier);
+}
+
+.docs-index-note {
+  display: flex;
+  gap: 8px;
+  margin-top: 25px;
+  padding-top: 14px;
+  border-top: 1px solid var(--workspace-rule);
+  color: #757b92;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.docs-index-note svg {
+  flex: 0 0 auto;
+  color: var(--workspace-mint);
+}
+
+.docs-main {
+  min-width: 0;
+}
+
+.docs-pillars {
+  gap: 1px !important;
+  background: var(--workspace-rule);
+  border-top: 1px solid var(--workspace-rule);
+  border-bottom: 1px solid var(--workspace-rule);
+}
+
+.docs-pillars > .glass-panel-gold {
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 28px !important;
+}
+
+.docs-pillars > .glass-panel-gold:nth-child(1) {
+  border-top: 3px solid #f18b9b !important;
+}
+
+.docs-pillars > .glass-panel-gold:nth-child(2) {
+  border-top: 3px solid var(--workspace-lavender) !important;
+}
+
+.docs-pillars > .glass-panel-gold:nth-child(3) {
+  border-top: 3px solid var(--workspace-mint) !important;
+}
+
+.docs-spec-panel,
+.docs-matrix-panel {
+  border-radius: 0 !important;
+  border-top: 2px solid var(--workspace-glacier) !important;
+}
+
+.docs-spec-panel pre {
+  border-radius: 0 !important;
+  border-color: var(--workspace-rule) !important;
+  color: #d9d8ec !important;
+}
+
+.docs-spec-grid {
+  gap: 1px !important;
+  background: var(--workspace-rule);
+}
+
+.docs-spec-grid > div {
+  border-radius: 0 !important;
+  background: #0a1020 !important;
+}
+
+.docs-matrix-panel {
+  border-top-color: var(--workspace-mint) !important;
+}
+
+.docs-matrix-panel table {
+  min-width: 580px;
+}
+
+.docs-matrix-panel th {
+  background: #0d1324 !important;
+  color: var(--workspace-glacier) !important;
+}
+
+.docs-actions {
+  padding-top: 4px;
+}
+
+@media (max-width: 920px) {
+  .verify-columns,
+  .registry-columns {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .verify-output-column {
+    position: static;
+  }
+
+  .docs-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .docs-index {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: 8px 16px;
+  }
+
+  .docs-index-title {
+    grid-column: 1 / -1;
+  }
+
+  .docs-index-note {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .workspace-page {
+    width: min(100% - 32px, 1360px) !important;
+    padding-top: 28px !important;
+    padding-bottom: 58px !important;
+  }
+
+  .workspace-page .workspace-header {
+    margin-bottom: 22px !important;
+    padding-bottom: 20px;
+  }
+
+  .workspace-breadcrumb {
+    margin-bottom: 22px;
+    font-size: 10px;
+  }
+
+  .workspace-page .workspace-header h1 {
+    font-size: clamp(2.35rem, 12vw, 3.4rem) !important;
+  }
+
+  .workspace-header-aside {
+    display: grid;
+    gap: 7px;
+  }
+
+  .verify-page .contract-rail {
+    grid-template-columns: 1fr;
+  }
+
+  .registry-page .registry-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .registry-page .registry-metrics > .glass-panel:nth-child(2) {
+    border-right: 0 !important;
+  }
+
+  .registry-page .registry-metrics > .glass-panel:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--workspace-rule) !important;
+  }
+
+  .docs-index {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .docs-index-title,
+  .docs-index-note {
+    grid-column: 1 / -1;
+  }
+
+  .workspace-page .glass-panel,
+  .workspace-page .glass-panel-gold {
+    padding: 22px !important;
+  }
+
+  .docs-pillars > .glass-panel-gold {
+    padding: 24px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .workspace-page {
+    width: calc(100% - 24px) !important;
+  }
+
+  .workspace-page .workspace-header h1 {
+    font-size: 2.35rem !important;
+  }
+
+  .registry-page .registry-metrics {
+    grid-template-columns: 1fr !important;
+  }
+
+  .registry-page .registry-metrics > .glass-panel {
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--workspace-rule) !important;
+  }
+
+  .registry-page .registry-metrics > .glass-panel:last-child {
+    border-bottom: 0 !important;
+  }
+
+  .docs-index {
+    display: flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-page .gold-shimmer-btn:hover {
+    transform: none;
+  }
+}

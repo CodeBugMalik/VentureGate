@@ -38,6 +38,7 @@ import {
   Info,
 } from 'lucide-react';
 import VaultEmblem from '../components/VaultEmblem';
+import './WorkspacePages.css';
 
 type VerifyState = 'idle' | 'proving' | 'success' | 'failure' | 'error';
 type PathwayType = 1 | 2 | 3 | 4;
@@ -320,9 +321,16 @@ export default function VerifyPage() {
   };
 
   return (
-    <div style={{ maxWidth: '1360px', margin: '0 auto', padding: '40px 24px 80px' }}>
+    <div className="page console-page workspace-page verify-page" style={{ maxWidth: '1360px', margin: '0 auto', padding: '40px 24px 80px' }}>
       {/* Top Banner & Header */}
-      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+      <header className="workspace-header verify-header" style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <nav className="workspace-breadcrumb" aria-label="Verification workspace">
+          <span className="workspace-breadcrumb-current">Workspace</span>
+          <span aria-hidden="true">/</span>
+          <span>Private proof</span>
+          <span aria-hidden="true">/</span>
+          <span>Accreditation</span>
+        </nav>
         <div
           style={{
             display: 'inline-flex',
@@ -350,11 +358,16 @@ export default function VerifyPage() {
           Prove your accredited investor status under United States SEC Rule 506(c) without disclosing your net worth,
           income, or bank statements. Proving executes 100% inside your browser WebAssembly runtime.
         </p>
-      </div>
+        <div className="workspace-header-aside" aria-label="Verification flow">
+          <span><strong>01</strong> Choose a statutory pathway</span>
+          <span><strong>02</strong> Witnesses stay in this browser</span>
+          <span><strong>03</strong> Share only the receipt</span>
+        </div>
+      </header>
 
       {/* Target Contract Configuration Strip */}
       <div
-        className="glass-panel"
+        className="glass-panel contract-rail"
         style={{
           padding: '14px 20px',
           borderRadius: '12px',
@@ -448,9 +461,9 @@ export default function VerifyPage() {
       </div>
 
       {/* Main Two-Column Console */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '28px', alignItems: 'start' }}>
+      <div className="workspace-columns verify-columns" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: '28px', alignItems: 'start' }}>
         {/* Left Column: Form & Presets */}
-        <div>
+        <div className="verify-input-column">
           {/* Statutory Pathway Tabs */}
           <div style={{ marginBottom: '20px' }}>
             <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', color: 'var(--text-muted)', marginBottom: '10px', textTransform: 'uppercase' }}>
@@ -746,7 +759,7 @@ export default function VerifyPage() {
         </div>
 
         {/* Right Column: Execution Terminal & Sovereign Badge */}
-        <div>
+        <div className="verify-output-column">
           {/* Proving Execution Terminal */}
           <div
             className="glass-panel"
@@ -917,7 +930,7 @@ export default function VerifyPage() {
               </div>
 
               {/* Action Buttons */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '10px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))', gap: '10px' }}>
                 <Link
                   to="/registry"
                   style={{
