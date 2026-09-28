@@ -185,7 +185,7 @@ export circuit verify_accreditation(net_worth: Uint<32>, income: Uint<32>): [] {
 ```
 
 ### Compiler Verification
-Compiled with Compact compiler `compact 0.31.0`. Compilation produces:
+Compiled with Compact compiler `compact 0.31.1`. Compilation produces:
 * Circuit constraint definition (`managed/venturegate/zkir/`)
 * Proving and verification keys (`managed/venturegate/keys/`)
 * TypeScript interface and runtime contract wrappers (`managed/venturegate/contract/`)
@@ -194,38 +194,81 @@ Compiled with Compact compiler `compact 0.31.0`. Compilation produces:
 
 ## Test Suite and Verification
 
-The test suite exercises end-to-end contract deployment, positive qualification verification, and rejection of sub-threshold candidates using Midnight's headless test framework and Vitest.
+The test suite exercises end-to-end contract deployment, multi-pathway statutory qualification verification, and rejection of sub-threshold candidates using Midnight's headless test framework and Vitest.
 
 ### Test Execution Output
 
 ```
 Test Files  1 passed (1)
-Tests       5 passed (5)
+Tests       7 passed (7)
 
 [PASS] Deploys the contract with VentureGate rules
-       - Deploys instance with min_net_worth = 1,000,000 and min_income = 200,000
+       - Deploys instance with min_net_worth = $1M, min_income = $200k, min_joint_income = $300k, min_qp_capital = $5M
        - Verifies ledger state initialization via GraphQL Indexer query
 
-[PASS] Verifies eligibility successfully for a qualifying investor
-       - Witness input: net_worth = 1,500,000, income = 250,000
-       - Constraint equations evaluated true
-       - Transaction accepted and finalized on-chain
+[PASS] Verifies eligibility and registers on-chain attestation for Net Worth pathway
+       - Witness input: net_worth = $1,500,000 (selected_pathway = 1)
+       - Evaluates net_worth >= min_net_worth inside ZK circuit
+       - Registers anonymous commitment in attestation_registry set and increments counter
 
-[PASS] Fails verification for an investor with net worth too low
-       - Witness input: net_worth = 500,000, income = 250,000
-       - Circuit assertion 'net_worth >= min_net_worth' rejects
-       - Prover terminates without generating invalid state change
+[PASS] Verifies eligibility and registers on-chain attestation for Individual Income pathway
+       - Witness input: income = $280,000 (selected_pathway = 2)
+       - Evaluates income >= min_income inside ZK circuit
+       - Registers anonymous commitment in attestation_registry set
 
-[PASS] Fails verification for an investor with income too low
-       - Witness input: net_worth = 1,500,000, income = 100,000
-       - Circuit assertion 'income >= min_income' rejects
-       - Prover terminates without generating invalid state change
+[PASS] Verifies eligibility and registers on-chain attestation for Joint Spousal Income pathway
+       - Witness input: joint_income = $350,000 (selected_pathway = 3)
+       - Evaluates joint_income >= min_joint_income inside ZK circuit
+       - Registers anonymous commitment in attestation_registry set
+
+[PASS] Verifies institutional Qualified Purchaser ($5M+ capital)
+       - Witness input: qp_capital = $7,500,000 (selected_pathway = 4)
+       - Evaluates qp_capital >= min_qp_capital under Section 2(a)(51)
+       - Registers anonymous commitment in attestation_registry set
+
+[PASS] Fails verification for an investor who does not meet threshold
+       - Witness input: net_worth = $400,000 (below $1,000,000 threshold)
+       - Circuit assertion rejects and transaction is safely aborted without state modification
 
 [PASS] Guarantees privacy: asserts witness values are never exposed on-chain or in ledger state
-       - Validates public ledger contains only min_net_worth and min_income thresholds
-       - Asserts private witness keys (net_worth, income) are absent from on-chain state
-       - Confirms 0 bytes of raw financial witness figures present in public indexer state
+       - Decodes public ledger state and asserts private witness keys (net_worth, income, etc.) are absent
+       - Stringifies raw public indexer payload to confirm 0 bytes of financial witness data ever leak
 ```
+
+---
+
+## Continuous Integration and Automated Pipeline (CI/CD)
+
+VentureGate enforces comprehensive automated quality gates, strict typing, circuit compilation, and zero-knowledge verification on every commit and pull request via GitHub Actions.
+
+[![CI](https://github.com/CodeBugMalik/VentureGate/actions/workflows/ci.yaml/badge.svg)](https://github.com/CodeBugMalik/VentureGate/actions/workflows/ci.yaml)
+[![Scan](https://github.com/CodeBugMalik/VentureGate/actions/workflows/scan.yaml/badge.svg)](https://github.com/CodeBugMalik/VentureGate/actions/workflows/scan.yaml)
+
+### CI/CD Workflow Architecture
+
+The primary continuous integration pipeline (`.github/workflows/ci.yaml`) executes dual parallel jobs on isolated Ubuntu runners:
+
+1. **`install-and-test`**:
+   * **Toolchain Initialization**: Installs Compact compiler `0.31.1` via `midnightntwrk/setup-compact-action`.
+   * **Strict Static Typing**: Runs `yarn typecheck` (`tsc --noEmit`) to verify contract wrappers, TypeScript providers, and test suites.
+   * **Circuit Synthesis**: Compiles `contracts/venturegate.compact` via `yarn compile`, verifying ZKIR circuits and cryptographic proving keys.
+   * **Ephemeral Devnet Container Stack**: Boots an isolated Midnight container stack (Node `0.22.5`, Indexer `4.0.2`, Proof Server `8.0.3`) via Docker Compose.
+   * **Deterministic DUST Accrual**: Synchronizes test wallet and awaits spendable DUST coins via `scripts/wait-for-dust.ts`.
+   * **Full Integration & Privacy Test Suite**: Runs all 7 integration test specs against the live devnet tip via Vitest (`yarn test:local`).
+   * **Resilient Service Log Capture**: Dumps full container logs to `logs/docker-compose.log` on failure before container teardown.
+
+2. **`build-frontend`**:
+   * **Automated Caching**: Configures Node.js 22 with dependency caching keyed against `frontend/package-lock.json`.
+   * **Deterministic Clean Install**: Executes `npm ci` for repeatable dependency resolution.
+   * **Production Bundling**: Executes `npm run build` (Vite) with WebAssembly and top-level await plugins, generating verified production bundles.
+
+3. **Security Analysis (`.github/workflows/scan.yaml`)**:
+   * Scans dependencies and actions using `midnightntwrk/upload-sarif-github-action` (Trivy, Gitleaks, Zizmor, Scorecard).
+   * Enforces pinned 40-character commit hashes on all GitHub Action references to eliminate supply-chain vulnerabilities.
+
+### Verified GitHub Actions Execution
+
+![VentureGate GitHub Actions CI Pipeline](sub%20assets/cicd.png)
 
 ---
 
@@ -234,7 +277,7 @@ Tests       5 passed (5)
 ### Prerequisites
 * Node.js >= 22.0.0
 * Docker Desktop (for local Midnight devnet stack)
-* Compact compiler `compact 0.31.0` installed in system PATH
+* Compact compiler `compact 0.31.1` installed in system PATH
 * 1AM Wallet browser extension configured for Midnight Preprod
 
 ### 1. Clone and Install Dependencies
@@ -357,7 +400,7 @@ VentureGate/
 * [PASS] Verifiable Preprod contract address: `8c34b5c05fe7ae32e5de68635a08d670c9a4ff5049ab2c2f76ffc95597b9082e`
 * [PASS] Video demonstration: https://drive.google.com/file/d/1YtwpQ9pI5BKeaVO3u1MlNxITJrrNdOKG/view?usp=sharing
 * [PASS] CI/CD pipeline configured and passing on GitHub Actions
-* [PASS] Test suite passing with 5 comprehensive integration tests including explicit privacy guarantees
+* [PASS] Test suite passing with 7 comprehensive integration tests including explicit privacy guarantees
 * [PASS] Compact smart contract compiled with managed circuit artifacts committed
 * [PASS] Clear privacy model specification (observer capabilities vs zero-leak guarantees)
 * [PASS] 40+ meaningful commits documenting progressive development history
