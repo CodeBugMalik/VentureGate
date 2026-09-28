@@ -20,6 +20,7 @@ Thumbs.db
 MIDNIGHT_MASTER_GUIDE.md
 stitch_venturegate_zk_investor_portal/
 .agents/
+__agent__/
 *.scratchpad*
 *.mp4
 sub assets/*.mp4

@@ -18,6 +18,7 @@
     "proof:up": "docker compose up -d --wait proof-server",
     "proof:down": "docker compose stop proof-server",
     "wait:dust": "vite-node scripts/wait-for-dust.ts",
+    "typecheck": "tsc --noEmit",
     "validate": "yarn env:up && yarn test:local; yarn env:down"
   },
   "dependencies": {
