@@ -24,6 +24,8 @@ __agent__/
 *.scratchpad*
 *.mp4
 sub assets/*.mp4
+.claude/
+skills-lock.json
 
 # DO NOT ignore — these must be committed:
 # frontend/src/managed/    <- TypeScript contract types for React
